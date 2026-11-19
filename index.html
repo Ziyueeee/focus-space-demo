@@ -45,13 +45,21 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-
 .app.is-paused .next-action::before{animation-play-state:paused}
 .app.is-offscreen *,.app.is-offscreen *::before{animation-play-state:paused!important;transition:none!important}
 @media(max-width:650px){.time-control{right:9px;top:8px;padding:4px 6px;gap:4px;font-size:10px}.time-control svg{width:10px;height:10px}.action-en{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.action-copy{gap:0}}
+.next-action{min-width:160px;justify-content:space-between}
+.tool-field{position:absolute;inset:0;pointer-events:none}
+.tool-token{position:absolute;left:0;top:0;width:102px;height:46px;display:flex;align-items:center;gap:9px;padding:8px 11px;border:1px solid #b9c9c34d;border-radius:7px;background:#202927;color:#dce4dc;box-shadow:0 4px 16px #00000012;opacity:0;transform-origin:center}
+.tool-token svg{width:17px;height:17px;stroke-width:1.4;color:#c2d0c5}
+.tool-copy{display:flex;flex-direction:column;gap:3px;line-height:1.1}.tool-zh{font-size:12px}.tool-en{font-size:9px;color:#a2b1a8}
+.tool-token.is-used{border-color:#c4d6c0;background:#303b31}
+@media(max-width:650px){.next-action{min-width:100px}.tool-token{width:60px;height:30px;gap:4px;padding:4px 5px;border-radius:5px}.tool-token svg{width:12px;height:12px}.tool-zh{font-size:10px}.tool-en{font-size:7px}.tool-copy{gap:2px}}
+@media(max-width:380px){.next-action{min-width:96px}}
 </style>
 </head>
 <body>
 <div class="app">
 <div class="sky" data-sky="0" aria-hidden="true"></div><div class="sky" data-sky="1" aria-hidden="true"></div><div class="sky" data-sky="2" aria-hidden="true"></div><div class="sky" data-sky="3" aria-hidden="true"></div>
-<main class="theatre"><div class="canvas-wrap"><canvas id="flow" role="button" tabindex="0" aria-label="演示画面。点击或按空格进入下一阶段，左方向键返回上一阶段。">使用下方阶段按钮演示粒子汇聚、生长与回应。</canvas><button class="time-control" id="time-control" hidden><span id="time-label">07:00</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></button><button class="next-action" id="action" hidden><span class="action-copy"><span id="action-zh">下一步</span><span class="action-en" id="action-en" lang="en"></span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div></main>
-<section class="stage-caption" id="stage-caption" aria-label="阶段说明"><div class="caption-layer" data-caption="0" aria-hidden="true"><p class="caption-zh" lang="zh-CN">日常琐事如流水，想法、对话与行动不断流过。</p><p class="caption-en" lang="en">Everyday life flows like a river, carrying thoughts, conversations, and actions.</p></div><div class="caption-layer" data-caption="1" aria-hidden="true"><p class="caption-zh" lang="zh-CN">Focus 从流动的日常中，发现你真正关注的重心。</p><p class="caption-en" lang="en">Within this everyday flow, Focus discovers what truly matters to you.</p></div><div class="caption-layer" data-caption="2" aria-hidden="true"><p class="caption-zh" lang="zh-CN">始于意图，积累记忆，让结构随真实需求自然生长。</p><p class="caption-en" lang="en">Start with intention. Build memory. Let structure grow with real needs.</p></div><div class="caption-layer" data-caption="3" aria-hidden="true"><p class="caption-zh" lang="zh-CN">随个人情境调整，在恰当的时刻，让关注化为下一步。</p><p class="caption-en" lang="en">Adapt to personal context, and let the next step emerge at the right moment.</p></div></section>
+<main class="theatre"><div class="canvas-wrap"><canvas id="flow" role="button" tabindex="0" aria-label="演示画面。点击或按空格进入下一阶段，左方向键返回上一阶段。">使用下方阶段按钮演示粒子汇聚、生长与回应。</canvas><button class="time-control" id="time-control" hidden><span id="time-label">07:00</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></button><div class="tool-field" id="tool-field" role="list" aria-label="此刻需要的工具 / Tools for this step" hidden></div><button class="next-action" id="action" hidden><span class="action-copy"><span id="action-zh">下一步</span><span class="action-en" id="action-en" lang="en"></span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div></main>
+<section class="stage-caption" id="stage-caption" aria-label="阶段说明"><div class="caption-layer" data-caption="0" aria-hidden="true"><p class="caption-zh" lang="zh-CN">日常琐事如流水，想法、对话与行动不断流过。</p><p class="caption-en" lang="en">Everyday life flows like a river, carrying thoughts, conversations, and actions.</p></div><div class="caption-layer" data-caption="1" aria-hidden="true"><p class="caption-zh" lang="zh-CN">Focus 从流动的日常中，发现你真正关注的重心。</p><p class="caption-en" lang="en">Within this everyday flow, Focus discovers what truly matters to you.</p></div><div class="caption-layer" data-caption="2" aria-hidden="true"><p class="caption-zh" lang="zh-CN">始于意图，积累记忆，让结构随真实需求自然生长。</p><p class="caption-en" lang="en">Start with intention. Build memory. Let structure grow with real needs.</p></div><div class="caption-layer" data-caption="3" aria-hidden="true"><p class="caption-zh" lang="zh-CN">情境变化，下一步浮现，所需工具随之聚拢。</p><p class="caption-en" lang="en">As context changes, the next step emerges and draws in the tools it needs.</p></div></section>
 <div class="controls"><nav class="steps" aria-label="演示阶段"><button class="step" data-step="0" aria-label="Flow" aria-current="step"><span class="step-dot"></span><span class="step-name">Flow</span><span class="step-index" aria-hidden="true">1</span></button><button class="step" data-step="1" aria-label="Emergence"><span class="step-dot"></span><span class="step-name">Emergence</span><span class="step-index" aria-hidden="true">2</span></button><button class="step" data-step="2" aria-label="Growth"><span class="step-dot"></span><span class="step-name">Growth</span><span class="step-index" aria-hidden="true">3</span></button><button class="step" data-step="3" aria-label="Intervention"><span class="step-dot"></span><span class="step-name">Intervention</span><span class="step-index" aria-hidden="true">4</span></button></nav><div class="foot-actions"><button class="quiet" id="motion" aria-label="暂停流动" title="暂停流动"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg></button></div></div>
 </div><div class="sr-only" role="status" aria-live="polite" id="announcement"></div>
 <script>
@@ -61,13 +69,22 @@ const $=id=>document.getElementById(id),canvas=$('flow'),ctx=canvas.getContext('
 const PALETTE=['#e3e5e0','#859b9b','#b0a38a','#9999ab','#8d908e'];
 const app=document.querySelector('.app');
 const MOMENTS=[
- {time:'07:00',name:'清晨 · Morning',sun:.055,zh:'确定今日重心',en:'Set an intention',done:'重心已确定',doneEn:'Intention set'},
- {time:'12:00',name:'正午 · Midday',sun:.5,zh:'推进下一步',en:'Move it forward',done:'已向前一步',doneEn:'A step forward'},
- {time:'18:00',name:'日落 · Sunset',sun:.97,zh:'回看今日进展',en:'Reflect on today',done:'进展已留存',doneEn:'Progress remembered'},
- {time:'21:00',name:'夜晚 · Night',sun:1.14,zh:'留待明日继续',en:'Pick up tomorrow',done:'明日再继续',doneEn:'Ready for tomorrow'}
+ {time:'07:00',name:'清晨 · Morning',sun:.055,zh:'确定今日重心',en:'Set an intention',done:'重心已确定',doneEn:'Intention set',tools:['calendar','notes']},
+ {time:'12:00',name:'正午 · Midday',sun:.5,zh:'推进下一步',en:'Move it forward',done:'已向前一步',doneEn:'A step forward',tools:['search','tasks']},
+ {time:'18:00',name:'日落 · Sunset',sun:.97,zh:'回看今日进展',en:'Reflect on today',done:'进展已留存',doneEn:'Progress remembered',tools:['notes','summary']},
+ {time:'21:00',name:'夜晚 · Night',sun:1.14,zh:'留待明日继续',en:'Pick up tomorrow',done:'明日再继续',doneEn:'Ready for tomorrow',tools:['memory','reminder']}
 ];
-let moment=-1,sunProgress=-.12,skyPresence=0,actionHalf=20;
-const CAPTIONS=[{"zh": "日常琐事如流水，想法、对话与行动不断流过。", "en": "Everyday life flows like a river, carrying thoughts, conversations, and actions."}, {"zh": "Focus 从流动的日常中，发现你真正关注的重心。", "en": "Within this everyday flow, Focus discovers what truly matters to you."}, {"zh": "始于意图，积累记忆，让结构随真实需求自然生长。", "en": "Start with intention. Build memory. Let structure grow with real needs."}, {"zh": "随个人情境调整，在恰当的时刻，让关注化为下一步。", "en": "Adapt to personal context, and let the next step emerge at the right moment."}];
+const TOOL_CATALOG={
+ calendar:{zh:'日历',en:'Calendar',icon:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4m8-4v4M4 10h16m-12 4h2m4 0h2m-8 3h2"/>'},
+ notes:{zh:'笔记',en:'Notes',icon:'<path d="M14 3H5v18h14V8Zm0 0v5h5M8 12h8m-8 4h6"/>'},
+ search:{zh:'搜索',en:'Search',icon:'<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>'},
+ tasks:{zh:'任务',en:'Tasks',icon:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="m7 9 2 2 4-4m-6 9 2 2 4-4m2-5h2m-2 7h2"/>'},
+ summary:{zh:'总结',en:'Summary',icon:'<path d="M5 4h14M5 8h14M5 12h8M5 20h10m-5-4 5 4-5 4"/>'},
+ memory:{zh:'记忆',en:'Memory',icon:'<path d="m12 3 9 5-9 5-9-5Zm-9 9 9 5 9-5m-18 5 9 5 9-5"/>'},
+ reminder:{zh:'提醒',en:'Remind',icon:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>'}
+};
+let moment=-1,sunProgress=-.12,skyPresence=0,actionHalf=20,toolTokens=[];
+const CAPTIONS=[{"zh": "日常琐事如流水，想法、对话与行动不断流过。", "en": "Everyday life flows like a river, carrying thoughts, conversations, and actions."}, {"zh": "Focus 从流动的日常中，发现你真正关注的重心。", "en": "Within this everyday flow, Focus discovers what truly matters to you."}, {"zh": "始于意图，积累记忆，让结构随真实需求自然生长。", "en": "Start with intention. Build memory. Let structure grow with real needs."}, {"zh": "情境变化，下一步浮现，所需工具随之聚拢。", "en": "As context changes, the next step emerges and draws in the tools it needs."}];
 let captionStage=-1,captionAge=0,captionShown=false;
 const TITLES=['日常流动','Emergence · 关注浮现','Growth · 持续生长','Intervention · 恰时回应'];
 const NOTES=['每一次对话、想法与行动，都从这里流过。','相同的关注，被识别、连接，汇成一个 Focus。','感知区域内的相关粒子，持续被吸引到 Focus。','时机出现，下一步从 Focus 上方涌现。'];
@@ -97,7 +114,7 @@ function revealCaption(){
 }
 function updateCaption(dt){
  if(captionStage!==step)prepareCaption();captionAge+=dt;if(captionShown)return;
- const ready=reduce.matches||(step===0?captionAge>=.55:step===1?focus>=.9:step===2?absorbed>=1&&growth>=.35:action>=.95);
+ const ready=reduce.matches||(step===0?captionAge>=.55:step===1?focus>=.9:step===2?absorbed>=1&&growth>=.35:action>=.95&&toolsReady());
  if(ready)revealCaption();
 }
 function setUI(){app.classList.toggle('is-paused',paused);if(captionStage!==step)prepareCaption();document.querySelectorAll('[data-step]').forEach(b=>{if(+b.dataset.step===step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');b.classList.toggle('done',+b.dataset.step<step);b.title=TITLES[+b.dataset.step]});$('motion').setAttribute('aria-label',paused?'继续流动':'暂停流动');$('motion').title=paused?'继续流动':'暂停流动';$('motion').innerHTML=paused?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>';placeAction();syncAction();$('announcement').textContent=TITLES[step]+'。'+NOTES[step]}
@@ -108,15 +125,15 @@ function syncSky(){
  if(step===3){const m=MOMENTS[moment],next=MOMENTS[(moment+1)%MOMENTS.length];$('time-label').textContent=m.time;$('time-control').title=m.name+' → '+next.name;$('time-control').setAttribute('aria-label',m.time+' '+m.name+'。切换至 '+next.time+' '+next.name)}
  canvas.setAttribute('aria-label',step===3?'演示画面。点击或按空格切换下一个时间节点，左方向键返回。':'演示画面。点击或按空格进入下一阶段，左方向键返回上一阶段。');
 }
-function clearDay(){moment=-1;sunProgress=-.12;skyPresence=0;syncSky();paintProjection()}
+function clearDay(){clearTools();moment=-1;sunProgress=-.12;skyPresence=0;syncSky();paintProjection()}
 function setMoment(target){
  const previous=moment;
  moment=clamp(target,0,MOMENTS.length-1);accepted=false;response=0;
  if(previous===3&&moment===0&&sunProgress>1)sunProgress=-.12;
- transition=reduce.matches?null:{elapsed:0,duration:4.1,target:3,fromSun:sunProgress,toSun:MOMENTS[moment].sun,fromPresence:skyPresence,previousAction:action,copyChanged:false};
+ transition=reduce.matches?null:{elapsed:0,duration:4.8,target:3,fromSun:sunProgress,toSun:MOMENTS[moment].sun,fromPresence:skyPresence,previousAction:action,copyChanged:false};
  if(reduce.matches){sunProgress=MOMENTS[moment].sun;skyPresence=1;action=1;actionCopy();paintProjection()}
  else if(previous<0){action=0;actionCopy();transition.copyChanged=true}
- syncSky();setUI();draw();
+ summonTools();syncSky();setUI();draw();
  $('announcement').textContent=MOMENTS[moment].time+' '+MOMENTS[moment].name+'。'+MOMENTS[moment].zh+' / '+MOMENTS[moment].en;
 }
 function reset(){captionStage=-1;particles.forEach(p=>p.removed=false);clock=0;step=0;transition=null;selected=[];attractions=[];absorbed=0;feedPulse=0;nextAttraction=0;focus=0;growth=0;action=0;response=0;accepted=false;clearDay();actionCopy();$('action').disabled=false;setUI();draw()}
@@ -139,7 +156,7 @@ canvas.addEventListener('click',presentationNext);
 $('stage-caption').addEventListener('click',()=>{if(!window.getSelection().toString())presentationNext()});
 document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>goTo(+b.dataset.step));$('motion').onclick=()=>{paused=!paused;setUI();draw()};
 $('time-control').onclick=()=>setMoment((moment+1)%MOMENTS.length);
-$('action').onclick=()=>{accepted=true;response=.001;actionCopy(true);$('action').disabled=true;$('announcement').textContent=MOMENTS[moment].done+'。Focus 的回应已回到日常流水中。';if(reduce.matches)response=1;syncAction();draw()};
+$('action').onclick=()=>{accepted=true;response=.001;toolTokens.filter(t=>!t.retiring).forEach(t=>t.el.classList.add('is-used'));actionCopy(true);$('action').disabled=true;$('announcement').textContent=MOMENTS[moment].done+'。'+MOMENTS[moment].tools.map(key=>TOOL_CATALOG[key].zh).join('、')+'已协同回应。';if(reduce.matches)response=1;syncAction();draw()};
 function drawRiver(){const time=reduce.matches?0:clock;for(let j=0;j<15;j++){const lane=(j-7)/7;ctx.beginPath();for(let x=-20;x<=width+20;x+=7){const u=x/width,y=riverY(u,lane)+Math.sin(u*9+time*.14+j*.3)*1.8;if(x===-20)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.strokeStyle=skyPresence>0?(j===7?'#7a8c8c':'#59696b'):(j===7?'#3f4443':'#292e2d');ctx.globalAlpha=skyPresence>0?.52:1;ctx.lineWidth=j===7?.85:.6;ctx.stroke()}
 for(let i=0;i<13;i++){let u=((i*.083+time*.018)%1.12)-.06;ctx.beginPath();ctx.moveTo(u*width,riverY(u,(i%5-2)/2));ctx.lineTo(u*width+12,riverY(u+12/width,(i%5-2)/2));ctx.strokeStyle='#555c59';ctx.lineWidth=.7;ctx.stroke()}particles.forEach(p=>{if(p.removed)return;const q=particlePos(p);dot(q.x,q.y,p.size,PALETTE[p.type],.70)})}
 function drawCapture(){if(!selected.length||!transition)return;const e=transition.elapsed,c=center();selected.forEach((s,i)=>{const highlight=clamp(e/.5),lift=smoother(clamp((e-.85-i*.055)/2.4)),time=Math.min(clock-s.clock,.85),u=s.x+time*s.p.speed,start={x:u*width,y:riverY(u,s.p.lane)},end=step===1?c:memoryPos(i),p=bezier(start,end,lift,(i-2)*3);const trailAlpha=Math.sin(lift*Math.PI)*.2;if(lift>0){ctx.beginPath();for(let j=0;j<=24;j++){const q=bezier(start,end,lift*j/24,(i-2)*3);j?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)}ctx.strokeStyle=PALETTE[0];ctx.globalAlpha=trailAlpha;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}const alpha=step===1?1-smooth(clamp((lift-.87)/.13)):1;glow(p.x,p.y,19+highlight*7,(.55+.45*highlight)*alpha);dot(p.x,p.y,3+highlight*1.3,PALETTE[0],alpha)})}
@@ -152,7 +169,7 @@ function syncAction(){
  button.hidden=step!==3||action<=0;
  button.style.transform='translate(-50%,calc(-50% + '+offset.toFixed(2)+'px)) scale('+(0.65+progress*.35).toFixed(3)+')';
  const outgoing=step===3&&transition&&transition.elapsed<.22;
- button.style.opacity=String(clamp(action*1.5));button.disabled=accepted||action<.98||outgoing;button.inert=action<.98||outgoing;button.classList.toggle('is-highlighted',step===3&&action>=.98&&!accepted&&!outgoing);
+ button.style.opacity=String(clamp(action*1.5));button.disabled=accepted||action<.98||outgoing||!toolsReady();button.inert=action<.98||outgoing||!toolsReady();button.classList.toggle('is-highlighted',step===3&&action>=.98&&!accepted&&!outgoing);
 }
 function drawFocus(){if(focus<=0)return;const c=center(),r=focusRadius(),appear=smooth(focus),breathing=reduce.matches||paused?0:Math.sin(clock*.65)*.7;ctx.globalAlpha=appear;ctx.fillStyle='#111212';ctx.beginPath();ctx.arc(c.x,c.y,(r+breathing)*(.6+.4*appear),0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d7dcd7';ctx.lineWidth=1.1;ctx.stroke();ctx.globalAlpha=appear;ctx.textAlign='center';ctx.font='500 '+String(Math.max(10,14*sceneScale()).toFixed(1))+'px -apple-system,BlinkMacSystemFont,sans-serif';ctx.fillStyle='#e5e7e3';ctx.fillText('Focus',c.x,c.y+4.5);ctx.globalAlpha=1;
 if(growth>0){
@@ -210,6 +227,60 @@ function updateAttractions(dt){
  if(!paused&&!reduce.matches){nextAttraction-=dt;if(nextAttraction<=0&&attractions.length<3){nextAttraction=startAttraction()?1.35:.35}}
 }
 
+function toolTarget(slot){
+ const a=actionPosition(),compact=width<650,half=compact?(width<360?48:50):80,toolHalf=compact?30:51,gap=compact?10:26;
+ return{x:a.x+(slot===0?-1:1)*(half+gap+toolHalf),y:a.y+(compact&&height<200?34:6)};
+}
+function toolsReady(){const active=toolTokens.filter(t=>!t.retiring);return step===3&&active.length===2&&active.every(t=>t.progress>=1)}
+function clearTools(){toolTokens.forEach(t=>t.el.remove());toolTokens=[];$('tool-field').hidden=true}
+function summonTools(){
+ // Keep the outgoing tools' current positions when the user changes time mid-flight.
+ toolTokens=toolTokens.filter(t=>{if(t.retiring||t.opacity<.02){t.el.remove();return false}t.retiring=true;t.exitAge=0;t.exitStart={u:t.position.x/width,v:t.position.y/height};t.exitOpacity=t.opacity;t.el.setAttribute('aria-hidden','true');return true});
+ $('tool-field').hidden=false;
+ $('tool-field').setAttribute('aria-label',MOMENTS[moment].zh+'所需的工具 / Tools for '+MOMENTS[moment].en);
+ MOMENTS[moment].tools.forEach((key,slot)=>{
+  const tool=TOOL_CATALOG[key],el=document.createElement('div');el.className='tool-token';el.dataset.tool=key;el.setAttribute('role','listitem');el.setAttribute('aria-hidden','true');
+  el.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+tool.icon+'</svg><span class="tool-copy"><span class="tool-zh">'+tool.zh+'</span><span class="tool-en" lang="en">'+tool.en+'</span></span>';
+  $('tool-field').appendChild(el);
+  const sourceU=slot===0?.20:.80,lane=slot===0?-.15:.15;
+  toolTokens.push({key,slot,el,sourceU,lane,age:0,delay:3.15+slot*.16,progress:0,opacity:0,position:{x:sourceU*width,y:riverY(sourceU,lane)},retiring:false});
+ });
+ if(reduce.matches)settleTools();else updateTools(0);
+}
+function settleTools(){toolTokens=toolTokens.filter(t=>{if(t.retiring){t.el.remove();return false}t.age=t.delay+1.3;t.progress=1;return true});updateTools(0)}
+function updateTools(dt){
+ if(step!==3||!toolTokens.length)return;
+ const readyBefore=toolsReady();
+ for(const t of toolTokens){
+  let scale;
+  if(t.retiring){
+   t.exitAge+=dt;const p=clamp(t.exitAge/.55),start={x:t.exitStart.u*width,y:t.exitStart.v*height},end={x:t.sourceU*width,y:riverY(t.sourceU,t.lane)};
+   t.position={x:start.x+(end.x-start.x)*smooth(p)*.35,y:start.y+(end.y-start.y)*smooth(p)*.35};t.opacity=t.exitOpacity*(1-p);scale=1-p*.2;
+   if(p>=1){t.el.remove();t.complete=true;continue}
+  }else{
+   t.age+=dt;t.progress=clamp((t.age-t.delay)/1.25);
+   const lift=smoother(t.progress),start={x:t.sourceU*width,y:riverY(t.sourceU,t.lane)},end=toolTarget(t.slot);
+   t.position=bezier(start,end,lift,(t.slot===0?-1:1)*width*.025);
+   t.opacity=smooth(clamp((t.progress-.05)/.22));scale=.65+.35*smooth(t.progress);
+   t.el.setAttribute('aria-hidden',t.progress<1?'true':'false');
+  }
+  t.el.style.transform='translate('+t.position.x.toFixed(2)+'px,'+t.position.y.toFixed(2)+'px) translate(-50%,-50%) scale('+scale.toFixed(3)+')';t.el.style.opacity=t.opacity.toFixed(3);
+ }
+ toolTokens=toolTokens.filter(t=>!t.complete);
+ if(readyBefore!==toolsReady())syncAction();
+}
+function drawTools(){
+ if(step!==3)return;
+ const card=actionPosition(),compact=width<650,half=compact?(width<360?48:50):80,toolHalf=compact?30:51;
+ for(const t of toolTokens){
+  if(t.retiring||t.age<t.delay)continue;
+  if(t.progress<.35){const strength=Math.sin(Math.PI*clamp(t.progress/.35));glow(t.sourceU*width,riverY(t.sourceU,t.lane),22*sceneScale(),strength);dot(t.sourceU*width,riverY(t.sourceU,t.lane),3,PALETTE[0],strength)}
+  const join=smooth(clamp((t.progress-.6)/.4));if(join<=0)continue;
+  const side=t.slot===0?-1:1,a={x:card.x+side*(half+5),y:card.y},b={x:t.position.x-side*(toolHalf+3),y:t.position.y};
+  ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.bezierCurveTo(a.x+side*12,a.y,b.x-side*12,b.y,b.x,b.y);ctx.lineWidth=.8;ctx.strokeStyle=accepted?'#c3d5bd':'#a6bba9';ctx.globalAlpha=join*(accepted?.8:.5);ctx.stroke();ctx.globalAlpha=1;
+  dot(a.x,a.y,1.6,'#d6e3d1',join*.8);
+ }
+}
 function sunPosition(){const p=sunProgress,horizon=height*.57,peak=Math.max(8,height*.055);return{x:width*(.08+.84*p),y:horizon-(horizon-peak)*Math.sin(Math.PI*p)}}
 function drawSky(){
  if(step!==3)return;
@@ -244,8 +315,8 @@ function drawIntervention(){
   else{const drift=reduce.matches?0:(clock*.03)%1;dot((.84+drift*.1)*width,riverY(.84+drift*.1),3.3,PALETTE[0],.9)}
  }
 }
-function draw(){if(!width)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);drawSky();drawProjection();drawRiver();drawCapture();drawAttractions();drawFocus();drawIntervention()}
-function resize(){const r=canvas.getBoundingClientRect();width=r.width;height=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);paintProjection();actionCopy(accepted);placeAction();syncAction();draw()}new ResizeObserver(resize).observe(canvas);
+function draw(){if(!width)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);drawSky();drawProjection();drawRiver();drawCapture();drawAttractions();drawFocus();drawIntervention();drawTools()}
+function resize(){const r=canvas.getBoundingClientRect();width=r.width;height=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);paintProjection();actionCopy(accepted);placeAction();updateTools(0);syncAction();draw()}new ResizeObserver(resize).observe(canvas);
 function updateTransition(dt){
  if(!transition)return;
  transition.elapsed+=dt;const e=transition.elapsed;
@@ -260,13 +331,13 @@ function updateTransition(dt){
  }
  if(e>=transition.duration){focus=1;if(step===1)growth=0;action=step===3?1:0;selected=[];transition=null;setUI()}
 }
-function tick(now){const dt=last?Math.min((now-last)/1000,.06):0;last=now;if(!hidden){if(!paused&&!reduce.matches)clock+=dt;const wasAnimating=Boolean(transition)||accepted&&response<1;if(step>=2&&(!paused&&!reduce.matches||transition))updateAttractions(dt);if(transition)updateTransition(dt);updateCaption(dt);if(accepted&&response<1)response=Math.min(1,response+dt*.65);if(!paused&&!reduce.matches||wasAnimating){draw();if(dt){frameMs.push(dt*1000);if(frameMs.length>120)frameMs.shift()}}}requestAnimationFrame(tick)}
+function tick(now){const dt=last?Math.min((now-last)/1000,.06):0;last=now;if(!hidden){if(!paused&&!reduce.matches)clock+=dt;const wasAnimating=Boolean(transition)||toolTokens.some(t=>t.retiring||t.progress<1)||accepted&&response<1;if(step>=2&&(!paused&&!reduce.matches||transition))updateAttractions(dt);if(transition)updateTransition(dt);updateTools(dt);updateCaption(dt);if(accepted&&response<1)response=Math.min(1,response+dt*.65);if(!paused&&!reduce.matches||wasAnimating){draw();if(dt){frameMs.push(dt*1000);if(frameMs.length>120)frameMs.shift()}}}requestAnimationFrame(tick)}
 reduce.addEventListener('change',()=>{
  paused=reduce.matches;
  if(reduce.matches){
   if(transition){focus=1;growth=step>=2?1:0;action=step===3?1:0;transition=null;selected=[]}
   attractions=[];if(step>=2){growth=1;absorbed=Math.max(4,absorbed)}
-  if(step===3){sunProgress=MOMENTS[moment].sun;skyPresence=1;actionCopy(accepted);paintProjection()}
+  if(step===3){sunProgress=MOMENTS[moment].sun;skyPresence=1;actionCopy(accepted);settleTools();paintProjection()}
  }
  setUI();placeAction();draw()
 });
@@ -279,7 +350,7 @@ document.addEventListener('keydown',e=>{
  if(e.key==='ArrowRight'||e.code==='Space'||e.key==='Enter'){e.preventDefault();presentationNext()}
  if(e.key==='ArrowLeft'){e.preventDefault();if(step===3&&moment>0)setMoment(moment-1);else goTo(Math.max(0,step-1))}
 });
-window.focusDemo={getState:()=>({step,stage:TITLES[step],transitioning:Boolean(transition),selected:selected.length,captured:particles.filter(p=>p.removed).length,absorbed,attracting:attractions.length,projection:step>=2?fieldBounds():null,attractionPositions:attractions.map(a=>({x:attractionPoint(a).x,y:attractionPoint(a).y,sourceY:a.y*height,source:a.source,age:a.age})),focus,growth,action,actionPosition:actionPosition(),focusPosition:center(),interventionTime:step===3?(transition?transition.elapsed:4.1):null,moment:step===3?MOMENTS[moment]:null,momentIndex:moment,sunProgress,sunPosition:sunPosition(),skyPresence,accepted,paused,clock,captionStage,captionShown,caption:CAPTIONS[step],reducedMotion:reduce.matches,meanFrameMs:frameMs.length?frameMs.reduce((a,b)=>a+b,0)/frameMs.length:0})};setUI();resize();requestAnimationFrame(tick);
+window.focusDemo={getState:()=>({step,stage:TITLES[step],transitioning:Boolean(transition),selected:selected.length,captured:particles.filter(p=>p.removed).length,absorbed,attracting:attractions.length,projection:step>=2?fieldBounds():null,attractionPositions:attractions.map(a=>({x:attractionPoint(a).x,y:attractionPoint(a).y,sourceY:a.y*height,source:a.source,age:a.age})),focus,growth,action,actionPosition:actionPosition(),focusPosition:center(),interventionTime:step===3?(transition?transition.elapsed:4.8):null,moment:step===3?MOMENTS[moment]:null,momentIndex:moment,sunProgress,sunPosition:sunPosition(),skyPresence,tools:toolTokens.filter(t=>!t.retiring).map(t=>({key:t.key,progress:t.progress,x:t.position.x,y:t.position.y,sourceY:riverY(t.sourceU,t.lane),target:toolTarget(t.slot)})),toolsReady:toolsReady(),accepted,paused,clock,captionStage,captionShown,caption:CAPTIONS[step],reducedMotion:reduce.matches,meanFrameMs:frameMs.length?frameMs.reduce((a,b)=>a+b,0)/frameMs.length:0})};setUI();resize();requestAnimationFrame(tick);
 })();
 </script>
 </body></html>
