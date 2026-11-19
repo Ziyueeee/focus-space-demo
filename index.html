@@ -68,6 +68,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-
 const $=id=>document.getElementById(id),canvas=$('flow'),ctx=canvas.getContext('2d'),reduce=matchMedia('(prefers-reduced-motion: reduce)');
 const PALETTE=['#e3e5e0','#859b9b','#b0a38a','#9999ab','#8d908e'];
 const app=document.querySelector('.app');
+const compactLayout=matchMedia('(max-width: 650px)'),narrowLayout=matchMedia('(max-width: 380px)');
 const MOMENTS=[
  {time:'07:00',name:'清晨 · Morning',sun:.055,zh:'确定今日重心',en:'Set an intention',done:'重心已确定',doneEn:'Intention set',tools:['calendar','notes']},
  {time:'12:00',name:'正午 · Midday',sun:.5,zh:'推进下一步',en:'Move it forward',done:'已向前一步',doneEn:'A step forward',tools:['search','tasks']},
@@ -118,7 +119,7 @@ function updateCaption(dt){
  if(ready)revealCaption();
 }
 function setUI(){app.classList.toggle('is-paused',paused);if(captionStage!==step)prepareCaption();document.querySelectorAll('[data-step]').forEach(b=>{if(+b.dataset.step===step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');b.classList.toggle('done',+b.dataset.step<step);b.title=TITLES[+b.dataset.step]});$('motion').setAttribute('aria-label',paused?'继续流动':'暂停流动');$('motion').title=paused?'继续流动':'暂停流动';$('motion').innerHTML=paused?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>';placeAction();syncAction();$('announcement').textContent=TITLES[step]+'。'+NOTES[step]}
-function actionCopy(done=false){const m=MOMENTS[moment];$('action-zh').textContent=m?(done?m.done:m.zh):'下一步';$('action-en').textContent=m?(done?m.doneEn:m.en):'';actionHalf=width<650?(width<360?11:14):27}
+function actionCopy(done=false){const m=MOMENTS[moment];$('action-zh').textContent=m?(done?m.done:m.zh):'下一步';$('action-en').textContent=m?(done?m.doneEn:m.en):'';actionHalf=compactLayout.matches?(narrowLayout.matches?11:14):27}
 function syncSky(){
  document.querySelectorAll('[data-sky]').forEach(el=>el.classList.toggle('is-visible',step===3&&+el.dataset.sky===moment));
  $('time-control').hidden=step!==3;
@@ -228,8 +229,9 @@ function updateAttractions(dt){
 }
 
 function toolTarget(slot){
- const a=actionPosition(),compact=width<650,half=compact?(width<360?48:50):80,toolHalf=compact?30:51,gap=compact?10:26;
- return{x:a.x+(slot===0?-1:1)*(half+gap+toolHalf),y:a.y+(compact&&height<200?34:6)};
+ const a=actionPosition(),compact=compactLayout.matches,half=compact?(narrowLayout.matches?48:50):80,toolHalf=compact?30:51,gap=compact?10:26;
+ const y=a.y+(compact&&height<200?34:6);
+ return{x:a.x+(slot===0?-1:1)*(half+gap+toolHalf),y:!compact&&width<660?Math.max(80,y):y};
 }
 function toolsReady(){const active=toolTokens.filter(t=>!t.retiring);return step===3&&active.length===2&&active.every(t=>t.progress>=1)}
 function clearTools(){toolTokens.forEach(t=>t.el.remove());toolTokens=[];$('tool-field').hidden=true}
@@ -271,7 +273,7 @@ function updateTools(dt){
 }
 function drawTools(){
  if(step!==3)return;
- const card=actionPosition(),compact=width<650,half=compact?(width<360?48:50):80,toolHalf=compact?30:51;
+ const card=actionPosition(),compact=compactLayout.matches,half=compact?(narrowLayout.matches?48:50):80,toolHalf=compact?30:51;
  for(const t of toolTokens){
   if(t.retiring||t.age<t.delay)continue;
   if(t.progress<.35){const strength=Math.sin(Math.PI*clamp(t.progress/.35));glow(t.sourceU*width,riverY(t.sourceU,t.lane),22*sceneScale(),strength);dot(t.sourceU*width,riverY(t.sourceU,t.lane),3,PALETTE[0],strength)}
