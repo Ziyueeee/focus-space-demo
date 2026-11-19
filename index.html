@@ -31,11 +31,26 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-
 .next-action.is-highlighted::before{animation:action-halo 2.5s ease-in-out infinite}
 @keyframes action-halo{0%,100%{opacity:.35}50%{opacity:.95}}
 @media(prefers-reduced-motion:reduce){.next-action.is-highlighted::before{animation:none!important;opacity:.7}}
+
+.app{position:relative;isolation:isolate}
+.sky{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity 1.8s ease-in-out}
+.sky[data-sky="0"]{background:radial-gradient(ellipse at 10% 42%,#77503e66,transparent 65%),linear-gradient(#353134,#292a2a 62%,#1e2221)}
+.sky[data-sky="1"]{background:radial-gradient(ellipse at 50% 4%,#87a8b43b,transparent 70%),linear-gradient(#374d5b,#2c3e46 58%,#202b2e)}
+.sky[data-sky="2"]{background:radial-gradient(ellipse at 92% 42%,#a363435e,transparent 68%),linear-gradient(#413540,#493b36 57%,#282725)}
+.sky[data-sky="3"]{background:radial-gradient(ellipse at 70% 10%,#343e592e,transparent 65%),linear-gradient(#181d2a,#192029 58%,#141b21)}
+.sky.is-visible{opacity:1}
+.time-control{position:absolute;right:24px;top:22px;display:flex;align-items:center;gap:9px;padding:7px 9px;border:1px solid #ffffff25;border-radius:5px;background:#12171926;color:#e2e5e1;font-size:12px;font-variant-numeric:tabular-nums;z-index:2}
+.time-control svg{width:12px;height:12px}.time-control:active,.next-action:active{scale:.97}
+.action-copy{display:flex;flex-direction:column;align-items:flex-start;gap:3px}.action-en{font-size:10px;font-weight:400;opacity:.68;letter-spacing:.12px}
+.app.is-paused .next-action::before{animation-play-state:paused}
+.app.is-offscreen *,.app.is-offscreen *::before{animation-play-state:paused!important;transition:none!important}
+@media(max-width:650px){.time-control{right:9px;top:8px;padding:4px 6px;gap:4px;font-size:10px}.time-control svg{width:10px;height:10px}.action-en{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.action-copy{gap:0}}
 </style>
 </head>
 <body>
 <div class="app">
-<main class="theatre"><div class="canvas-wrap"><canvas id="flow" role="button" tabindex="0" aria-label="演示画面。点击或按空格进入下一阶段，左方向键返回上一阶段。">使用下方阶段按钮演示粒子汇聚、生长与回应。</canvas><button class="next-action" id="action" hidden><span>下一步</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div></main>
+<div class="sky" data-sky="0" aria-hidden="true"></div><div class="sky" data-sky="1" aria-hidden="true"></div><div class="sky" data-sky="2" aria-hidden="true"></div><div class="sky" data-sky="3" aria-hidden="true"></div>
+<main class="theatre"><div class="canvas-wrap"><canvas id="flow" role="button" tabindex="0" aria-label="演示画面。点击或按空格进入下一阶段，左方向键返回上一阶段。">使用下方阶段按钮演示粒子汇聚、生长与回应。</canvas><button class="time-control" id="time-control" hidden><span id="time-label">07:00</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></button><button class="next-action" id="action" hidden><span class="action-copy"><span id="action-zh">下一步</span><span class="action-en" id="action-en" lang="en"></span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div></main>
 <section class="stage-caption" id="stage-caption" aria-label="阶段说明"><div class="caption-layer" data-caption="0" aria-hidden="true"><p class="caption-zh" lang="zh-CN">日常琐事如流水，想法、对话与行动不断流过。</p><p class="caption-en" lang="en">Everyday life flows like a river, carrying thoughts, conversations, and actions.</p></div><div class="caption-layer" data-caption="1" aria-hidden="true"><p class="caption-zh" lang="zh-CN">Focus 从流动的日常中，发现你真正关注的重心。</p><p class="caption-en" lang="en">Within this everyday flow, Focus discovers what truly matters to you.</p></div><div class="caption-layer" data-caption="2" aria-hidden="true"><p class="caption-zh" lang="zh-CN">始于意图，积累记忆，让结构随真实需求自然生长。</p><p class="caption-en" lang="en">Start with intention. Build memory. Let structure grow with real needs.</p></div><div class="caption-layer" data-caption="3" aria-hidden="true"><p class="caption-zh" lang="zh-CN">随个人情境调整，在恰当的时刻，让关注化为下一步。</p><p class="caption-en" lang="en">Adapt to personal context, and let the next step emerge at the right moment.</p></div></section>
 <div class="controls"><nav class="steps" aria-label="演示阶段"><button class="step" data-step="0" aria-label="Flow" aria-current="step"><span class="step-dot"></span><span class="step-name">Flow</span><span class="step-index" aria-hidden="true">1</span></button><button class="step" data-step="1" aria-label="Emergence"><span class="step-dot"></span><span class="step-name">Emergence</span><span class="step-index" aria-hidden="true">2</span></button><button class="step" data-step="2" aria-label="Growth"><span class="step-dot"></span><span class="step-name">Growth</span><span class="step-index" aria-hidden="true">3</span></button><button class="step" data-step="3" aria-label="Intervention"><span class="step-dot"></span><span class="step-name">Intervention</span><span class="step-index" aria-hidden="true">4</span></button></nav><div class="foot-actions"><button class="quiet" id="motion" aria-label="暂停流动" title="暂停流动"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg></button></div></div>
 </div><div class="sr-only" role="status" aria-live="polite" id="announcement"></div>
@@ -44,6 +59,14 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-
 'use strict';
 const $=id=>document.getElementById(id),canvas=$('flow'),ctx=canvas.getContext('2d'),reduce=matchMedia('(prefers-reduced-motion: reduce)');
 const PALETTE=['#e3e5e0','#859b9b','#b0a38a','#9999ab','#8d908e'];
+const app=document.querySelector('.app');
+const MOMENTS=[
+ {time:'07:00',name:'清晨 · Morning',sun:.055,zh:'确定今日重心',en:'Set an intention',done:'重心已确定',doneEn:'Intention set'},
+ {time:'12:00',name:'正午 · Midday',sun:.5,zh:'推进下一步',en:'Move it forward',done:'已向前一步',doneEn:'A step forward'},
+ {time:'18:00',name:'日落 · Sunset',sun:.97,zh:'回看今日进展',en:'Reflect on today',done:'进展已留存',doneEn:'Progress remembered'},
+ {time:'21:00',name:'夜晚 · Night',sun:1.14,zh:'留待明日继续',en:'Pick up tomorrow',done:'明日再继续',doneEn:'Ready for tomorrow'}
+];
+let moment=-1,sunProgress=-.12,skyPresence=0,actionHalf=20;
 const CAPTIONS=[{"zh": "日常琐事如流水，想法、对话与行动不断流过。", "en": "Everyday life flows like a river, carrying thoughts, conversations, and actions."}, {"zh": "Focus 从流动的日常中，发现你真正关注的重心。", "en": "Within this everyday flow, Focus discovers what truly matters to you."}, {"zh": "始于意图，积累记忆，让结构随真实需求自然生长。", "en": "Start with intention. Build memory. Let structure grow with real needs."}, {"zh": "随个人情境调整，在恰当的时刻，让关注化为下一步。", "en": "Adapt to personal context, and let the next step emerge at the right moment."}];
 let captionStage=-1,captionAge=0,captionShown=false;
 const TITLES=['日常流动','Emergence · 关注浮现','Growth · 持续生长','Intervention · 恰时回应'];
@@ -54,8 +77,8 @@ let seed=8102;function rand(){seed=(seed*1664525+1013904223)>>>0;return seed/429
 const particles=Array.from({length:94},(_,i)=>({id:i,u:rand(),lane:rand()*2-1,speed:.023+rand()*.011,size:2.0+rand()*1.5,type:i%5,phase:rand()*6.28,removed:false}));
 const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),smooth=u=>u*u*(3-2*u),smoother=u=>u*u*u*(u*(u*6-15)+10);
 function sceneScale(){return height<170?clamp(width/800,.33,1):clamp(width/700,.40,1)}
-function center(){return{x:width*.5,y:height*(height<200?.46:.34)}}
-function riverY(u,lane=0){return height*(.68+.045*Math.sin(u*6.4-.5))+lane*height*.10}
+function center(){return{x:width*.5,y:height*((height<200?.46:.34)+(height<200?.10:0)*skyPresence)}}
+function riverY(u,lane=0){return height*(.68+(height<200?.10:0)*skyPresence+.045*Math.sin(u*6.4-.5))+lane*height*.10}
 function particlePos(p,time=clock){let u=((p.u+time*p.speed)%1.14)-.07;return{x:u*width,y:riverY(u,p.lane)+Math.sin(time*.45+p.phase)*2,u}}
 function dot(x,y,r,color,alpha=1){ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
 function glow(x,y,r,strength){let g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba(220,228,223,'+(.28*strength)+')');g.addColorStop(.35,'rgba(220,228,223,'+(.12*strength)+')');g.addColorStop(1,'rgba(220,228,223,0)');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
@@ -77,37 +100,59 @@ function updateCaption(dt){
  const ready=reduce.matches||(step===0?captionAge>=.55:step===1?focus>=.9:step===2?absorbed>=1&&growth>=.35:action>=.95);
  if(ready)revealCaption();
 }
-function setUI(){if(captionStage!==step)prepareCaption();document.querySelectorAll('[data-step]').forEach(b=>{if(+b.dataset.step===step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');b.classList.toggle('done',+b.dataset.step<step);b.title=TITLES[+b.dataset.step]});$('motion').setAttribute('aria-label',paused?'继续流动':'暂停流动');$('motion').title=paused?'继续流动':'暂停流动';$('motion').innerHTML=paused?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>';placeAction();syncAction();$('announcement').textContent=TITLES[step]+'。'+NOTES[step]}
-function reset(){captionStage=-1;particles.forEach(p=>p.removed=false);clock=0;step=0;transition=null;selected=[];attractions=[];absorbed=0;feedPulse=0;nextAttraction=0;focus=0;growth=0;action=0;response=0;accepted=false;$('action').querySelector('span').textContent='下一步';$('action').disabled=false;setUI();draw()}
+function setUI(){app.classList.toggle('is-paused',paused);if(captionStage!==step)prepareCaption();document.querySelectorAll('[data-step]').forEach(b=>{if(+b.dataset.step===step)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');b.classList.toggle('done',+b.dataset.step<step);b.title=TITLES[+b.dataset.step]});$('motion').setAttribute('aria-label',paused?'继续流动':'暂停流动');$('motion').title=paused?'继续流动':'暂停流动';$('motion').innerHTML=paused?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>';placeAction();syncAction();$('announcement').textContent=TITLES[step]+'。'+NOTES[step]}
+function actionCopy(done=false){const m=MOMENTS[moment];$('action-zh').textContent=m?(done?m.done:m.zh):'下一步';$('action-en').textContent=m?(done?m.doneEn:m.en):'';actionHalf=width<650?(width<360?11:14):27}
+function syncSky(){
+ document.querySelectorAll('[data-sky]').forEach(el=>el.classList.toggle('is-visible',step===3&&+el.dataset.sky===moment));
+ $('time-control').hidden=step!==3;
+ if(step===3){const m=MOMENTS[moment],next=MOMENTS[(moment+1)%MOMENTS.length];$('time-label').textContent=m.time;$('time-control').title=m.name+' → '+next.name;$('time-control').setAttribute('aria-label',m.time+' '+m.name+'。切换至 '+next.time+' '+next.name)}
+ canvas.setAttribute('aria-label',step===3?'演示画面。点击或按空格切换下一个时间节点，左方向键返回。':'演示画面。点击或按空格进入下一阶段，左方向键返回上一阶段。');
+}
+function clearDay(){moment=-1;sunProgress=-.12;skyPresence=0;syncSky();paintProjection()}
+function setMoment(target){
+ const previous=moment;
+ moment=clamp(target,0,MOMENTS.length-1);accepted=false;response=0;
+ if(previous===3&&moment===0&&sunProgress>1)sunProgress=-.12;
+ transition=reduce.matches?null:{elapsed:0,duration:4.1,target:3,fromSun:sunProgress,toSun:MOMENTS[moment].sun,fromPresence:skyPresence,previousAction:action,copyChanged:false};
+ if(reduce.matches){sunProgress=MOMENTS[moment].sun;skyPresence=1;action=1;actionCopy();paintProjection()}
+ else if(previous<0){action=0;actionCopy();transition.copyChanged=true}
+ syncSky();setUI();draw();
+ $('announcement').textContent=MOMENTS[moment].time+' '+MOMENTS[moment].name+'。'+MOMENTS[moment].zh+' / '+MOMENTS[moment].en;
+}
+function reset(){captionStage=-1;particles.forEach(p=>p.removed=false);clock=0;step=0;transition=null;selected=[];attractions=[];absorbed=0;feedPulse=0;nextAttraction=0;focus=0;growth=0;action=0;response=0;accepted=false;clearDay();actionCopy();$('action').disabled=false;setUI();draw()}
 function goTo(target){
  if(target===0){reset();return}if(target===step&&!transition)return;
  const sequential=target===step+1;
  if(!sequential){particles.forEach(p=>p.removed=false);attractions=[];absorbed=target===3?4:0}
  selected=[];focus=target>1?1:0;growth=target===3?(sequential?growth:1):0;action=0;response=0;accepted=false;
- $('action').querySelector('span').textContent='下一步';$('action').disabled=false;step=target;captionStage=-1;
+ $('action').disabled=false;step=target;captionStage=-1;
+ if(target!==3){clearDay();actionCopy()}
  if(target===1){attractions=[];absorbed=0;selected=chooseParticles(5)}
  if(target===2){attractions=[];absorbed=0;nextAttraction=4.2;for(let i=0;i<4;i++)startAttraction(-i*.27)}
- if(reduce.matches){focus=1;growth=target>=2?1:0;absorbed=target>=2?4:0;action=target===3?1:0;attractions=[];transition=null}
+ if(target===3){focus=1;moment=-1;setMoment(0);return}
+ if(reduce.matches){focus=1;growth=target>=2?1:0;absorbed=target>=2?4:0;action=0;attractions=[];transition=null}
  else transition={elapsed:0,duration:target===1?3.8:target===2?3.7:3.3,target};
  setUI();draw()
 }
-function presentationNext(){if(step===3){reset();return}goTo(step+1)}
+function presentationNext(){if(step===3){if(moment<3)setMoment(moment+1);else reset();return}goTo(step+1)}
 canvas.addEventListener('click',presentationNext);
 $('stage-caption').addEventListener('click',()=>{if(!window.getSelection().toString())presentationNext()});
 document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>goTo(+b.dataset.step));$('motion').onclick=()=>{paused=!paused;setUI();draw()};
-$('action').onclick=()=>{accepted=true;response=.001;$('action').querySelector('span').textContent='已回应';$('action').disabled=true;$('announcement').textContent='Focus 的回应已回到日常流水中。';if(reduce.matches)response=1;syncAction();draw()};
-function drawRiver(){const time=reduce.matches?0:clock;for(let j=0;j<15;j++){const lane=(j-7)/7;ctx.beginPath();for(let x=-20;x<=width+20;x+=7){const u=x/width,y=riverY(u,lane)+Math.sin(u*9+time*.14+j*.3)*1.8;if(x===-20)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.strokeStyle=j===7?'#3f4443':'#292e2d';ctx.lineWidth=j===7?.85:.6;ctx.stroke()}
+$('time-control').onclick=()=>setMoment((moment+1)%MOMENTS.length);
+$('action').onclick=()=>{accepted=true;response=.001;actionCopy(true);$('action').disabled=true;$('announcement').textContent=MOMENTS[moment].done+'。Focus 的回应已回到日常流水中。';if(reduce.matches)response=1;syncAction();draw()};
+function drawRiver(){const time=reduce.matches?0:clock;for(let j=0;j<15;j++){const lane=(j-7)/7;ctx.beginPath();for(let x=-20;x<=width+20;x+=7){const u=x/width,y=riverY(u,lane)+Math.sin(u*9+time*.14+j*.3)*1.8;if(x===-20)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.strokeStyle=skyPresence>0?(j===7?'#7a8c8c':'#59696b'):(j===7?'#3f4443':'#292e2d');ctx.globalAlpha=skyPresence>0?.52:1;ctx.lineWidth=j===7?.85:.6;ctx.stroke()}
 for(let i=0;i<13;i++){let u=((i*.083+time*.018)%1.12)-.06;ctx.beginPath();ctx.moveTo(u*width,riverY(u,(i%5-2)/2));ctx.lineTo(u*width+12,riverY(u+12/width,(i%5-2)/2));ctx.strokeStyle='#555c59';ctx.lineWidth=.7;ctx.stroke()}particles.forEach(p=>{if(p.removed)return;const q=particlePos(p);dot(q.x,q.y,p.size,PALETTE[p.type],.70)})}
 function drawCapture(){if(!selected.length||!transition)return;const e=transition.elapsed,c=center();selected.forEach((s,i)=>{const highlight=clamp(e/.5),lift=smoother(clamp((e-.85-i*.055)/2.4)),time=Math.min(clock-s.clock,.85),u=s.x+time*s.p.speed,start={x:u*width,y:riverY(u,s.p.lane)},end=step===1?c:memoryPos(i),p=bezier(start,end,lift,(i-2)*3);const trailAlpha=Math.sin(lift*Math.PI)*.2;if(lift>0){ctx.beginPath();for(let j=0;j<=24;j++){const q=bezier(start,end,lift*j/24,(i-2)*3);j?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)}ctx.strokeStyle=PALETTE[0];ctx.globalAlpha=trailAlpha;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}const alpha=step===1?1-smooth(clamp((lift-.87)/.13)):1;glow(p.x,p.y,19+highlight*7,(.55+.45*highlight)*alpha);dot(p.x,p.y,3+highlight*1.3,PALETTE[0],alpha)})}
 function focusRadius(){return(36+growth*7+Math.min(Math.max(absorbed-4,0),12)*.27+feedPulse*1.9)*sceneScale()}
-function actionPosition(){const c=center(),half=width<360?11:width<650?14:20,gap=Math.max(7,height*.026);return{x:c.x,y:Math.max(half+5,c.y-focusRadius()-gap-half)}}
+function actionPosition(){const c=center(),half=actionHalf,gap=Math.max(7,height*.026);return{x:c.x,y:Math.max(half+5,c.y-focusRadius()-gap-half)}}
 function placeAction(){const p=actionPosition();$('action').style.left=p.x+'px';$('action').style.top=p.y+'px'}
 function syncAction(){
  const button=$('action'),p=actionPosition(),c=center();
  const progress=reduce.matches?action:1-Math.pow(1-clamp(action),3),offset=(c.y-focusRadius()-p.y)*(1-progress);
  button.hidden=step!==3||action<=0;
  button.style.transform='translate(-50%,calc(-50% + '+offset.toFixed(2)+'px)) scale('+(0.65+progress*.35).toFixed(3)+')';
- button.style.opacity=String(clamp(action*1.5));button.disabled=accepted||action<.98;button.inert=action<.98;button.classList.toggle('is-highlighted',step===3&&action>=.98&&!accepted);
+ const outgoing=step===3&&transition&&transition.elapsed<.22;
+ button.style.opacity=String(clamp(action*1.5));button.disabled=accepted||action<.98||outgoing;button.inert=action<.98||outgoing;button.classList.toggle('is-highlighted',step===3&&action>=.98&&!accepted&&!outgoing);
 }
 function drawFocus(){if(focus<=0)return;const c=center(),r=focusRadius(),appear=smooth(focus),breathing=reduce.matches||paused?0:Math.sin(clock*.65)*.7;ctx.globalAlpha=appear;ctx.fillStyle='#111212';ctx.beginPath();ctx.arc(c.x,c.y,(r+breathing)*(.6+.4*appear),0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d7dcd7';ctx.lineWidth=1.1;ctx.stroke();ctx.globalAlpha=appear;ctx.textAlign='center';ctx.font='500 '+String(Math.max(10,14*sceneScale()).toFixed(1))+'px -apple-system,BlinkMacSystemFont,sans-serif';ctx.fillStyle='#e5e7e3';ctx.fillText('Focus',c.x,c.y+4.5);ctx.globalAlpha=1;
 if(growth>0){
@@ -165,12 +210,28 @@ function updateAttractions(dt){
  if(!paused&&!reduce.matches){nextAttraction-=dt;if(nextAttraction<=0&&attractions.length<3){nextAttraction=startAttraction()?1.35:.35}}
 }
 
+function sunPosition(){const p=sunProgress,horizon=height*.57,peak=Math.max(8,height*.055);return{x:width*(.08+.84*p),y:horizon-(horizon-peak)*Math.sin(Math.PI*p)}}
+function drawSky(){
+ if(step!==3)return;
+ const p=sunPosition(),r=Math.max(5,14*sceneScale()),night=smooth(clamp((sunProgress-1)/.14));
+ ctx.save();ctx.globalAlpha=skyPresence;
+ // Keep the sun on one east-to-west arc; the river acts as its horizon.
+ ctx.beginPath();ctx.rect(0,0,width,height*.57);ctx.clip();
+ const light=ctx.createRadialGradient(p.x,p.y,r*.3,p.x,p.y,r*8);
+ light.addColorStop(0,'rgba(246,214,158,.22)');light.addColorStop(.28,'rgba(246,214,158,.08)');light.addColorStop(1,'rgba(246,214,158,0)');
+ ctx.fillStyle=light;ctx.fillRect(p.x-r*8,p.y-r*8,r*16,r*16);
+ const disc=ctx.createLinearGradient(0,p.y-r,0,p.y+r);disc.addColorStop(0,'#fff1cd');disc.addColorStop(1,'#d4ad79');ctx.fillStyle=disc;
+ ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#ffedc64d';ctx.lineWidth=.7;ctx.beginPath();ctx.arc(p.x,p.y,r+4*sceneScale(),0,Math.PI*2);ctx.stroke();
+ ctx.restore();
+ if(night>0){for(let i=0;i<15;i++){const x=width*(.09+((i*.137)% .82)),y=height*(.06+((i*.073)% .32));dot(x,y,i%3===0?1.1:.65,'#d3deec',night*skyPresence*(i%3===0?.45:.22))}}
+ if(width>650){ctx.font='10px -apple-system,BlinkMacSystemFont,sans-serif';ctx.fillStyle='#d9d5cb';ctx.globalAlpha=skyPresence*.4;ctx.textAlign='left';ctx.fillText('东 · E',width*.08,height*.57+18);ctx.textAlign='right';ctx.fillText('西 · W',width*.92,height*.57+18);ctx.globalAlpha=1}
+}
 function drawIntervention(){
  if(step!==3)return;
- const c=center(),r=focusRadius(),elapsed=transition?transition.elapsed:3.3;
+ const c=center(),r=focusRadius(),elapsed=transition?transition.elapsed:4.1;
  // A brief sensing beat precedes the action. Rings spread from the Focus boundary.
  if(!reduce.matches){for(let i=0;i<3;i++){
-  const u=(elapsed-.6-i*.34)/1.65;if(u<=0||u>=1)continue;
+  const u=(elapsed-1.45-i*.30)/1.65;if(u<=0||u>=1)continue;
   const expansion=1-Math.pow(1-u,2),radius=r+expansion*43*sceneScale();
   ctx.beginPath();ctx.arc(c.x,c.y,radius,0,Math.PI*2);
   ctx.strokeStyle=PALETTE[0];ctx.lineWidth=1;ctx.globalAlpha=.35*Math.sin(Math.PI*u)*(1-u*.4);ctx.stroke();ctx.globalAlpha=1;
@@ -183,12 +244,42 @@ function drawIntervention(){
   else{const drift=reduce.matches?0:(clock*.03)%1;dot((.84+drift*.1)*width,riverY(.84+drift*.1),3.3,PALETTE[0],.9)}
  }
 }
-function draw(){if(!width)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);drawProjection();drawRiver();drawCapture();drawAttractions();drawFocus();drawIntervention()}
-function resize(){const r=canvas.getBoundingClientRect();width=r.width;height=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);paintProjection();placeAction();syncAction();draw()}new ResizeObserver(resize).observe(canvas);
-function updateTransition(dt){if(!transition)return;transition.elapsed+=dt;const e=transition.elapsed;if(step===1)focus=smooth(clamp((e-2.35)/1.25));if(step===3){action=clamp((e-1.65)/1.1);syncAction()}if(e>=transition.duration){focus=1;if(step===1)growth=0;action=step===3?1:0;selected=[];transition=null;setUI()}}
+function draw(){if(!width)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);drawSky();drawProjection();drawRiver();drawCapture();drawAttractions();drawFocus();drawIntervention()}
+function resize(){const r=canvas.getBoundingClientRect();width=r.width;height=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);paintProjection();actionCopy(accepted);placeAction();syncAction();draw()}new ResizeObserver(resize).observe(canvas);
+function updateTransition(dt){
+ if(!transition)return;
+ transition.elapsed+=dt;const e=transition.elapsed;
+ if(step===1)focus=smooth(clamp((e-2.35)/1.25));
+ if(step===3){
+  const travel=smoother(clamp(e/1.9));sunProgress=transition.fromSun+(transition.toSun-transition.fromSun)*travel;
+  const previousPresence=skyPresence;skyPresence=transition.fromPresence+(1-transition.fromPresence)*smooth(clamp(e/1.4));
+  if(height<200&&previousPresence!==skyPresence)paintProjection();
+  if(e<.22)action=transition.previousAction*(1-smooth(e/.22));
+  else{if(!transition.copyChanged){actionCopy();transition.copyChanged=true}action=clamp((e-2.25)/.9)}
+  placeAction();syncAction();
+ }
+ if(e>=transition.duration){focus=1;if(step===1)growth=0;action=step===3?1:0;selected=[];transition=null;setUI()}
+}
 function tick(now){const dt=last?Math.min((now-last)/1000,.06):0;last=now;if(!hidden){if(!paused&&!reduce.matches)clock+=dt;const wasAnimating=Boolean(transition)||accepted&&response<1;if(step>=2&&(!paused&&!reduce.matches||transition))updateAttractions(dt);if(transition)updateTransition(dt);updateCaption(dt);if(accepted&&response<1)response=Math.min(1,response+dt*.65);if(!paused&&!reduce.matches||wasAnimating){draw();if(dt){frameMs.push(dt*1000);if(frameMs.length>120)frameMs.shift()}}}requestAnimationFrame(tick)}
-reduce.addEventListener('change',()=>{paused=reduce.matches;if(reduce.matches&&transition){focus=1;growth=step>=2?1:0;action=step===3?1:0;transition=null;selected=[]}if(reduce.matches){attractions=[];if(step>=2){growth=1;absorbed=Math.max(4,absorbed)}}setUI();draw()});document.addEventListener('visibilitychange',()=>{hidden=document.hidden;last=0});document.addEventListener('keydown',e=>{if(/BUTTON|INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;if(e.key==='ArrowRight'||e.code==='Space'||e.key==='Enter'){e.preventDefault();presentationNext()}if(e.key==='ArrowLeft'){e.preventDefault();goTo(Math.max(0,step-1))}});
-window.focusDemo={getState:()=>({step,stage:TITLES[step],transitioning:Boolean(transition),selected:selected.length,captured:particles.filter(p=>p.removed).length,absorbed,attracting:attractions.length,projection:step>=2?fieldBounds():null,attractionPositions:attractions.map(a=>({x:attractionPoint(a).x,y:attractionPoint(a).y,sourceY:a.y*height,source:a.source,age:a.age})),focus,growth,action,actionPosition:actionPosition(),focusPosition:center(),interventionTime:step===3?(transition?transition.elapsed:3.3):null,accepted,paused,clock,captionStage,captionShown,caption:CAPTIONS[step],reducedMotion:reduce.matches,meanFrameMs:frameMs.length?frameMs.reduce((a,b)=>a+b,0)/frameMs.length:0})};setUI();resize();requestAnimationFrame(tick);
+reduce.addEventListener('change',()=>{
+ paused=reduce.matches;
+ if(reduce.matches){
+  if(transition){focus=1;growth=step>=2?1:0;action=step===3?1:0;transition=null;selected=[]}
+  attractions=[];if(step>=2){growth=1;absorbed=Math.max(4,absorbed)}
+  if(step===3){sunProgress=MOMENTS[moment].sun;skyPresence=1;actionCopy(accepted);paintProjection()}
+ }
+ setUI();placeAction();draw()
+});
+let offscreen=false;
+function updateVisibility(){hidden=document.hidden||offscreen;app.classList.toggle('is-offscreen',hidden);last=0}
+new IntersectionObserver(entries=>{offscreen=!entries[0].isIntersecting;updateVisibility()}).observe(app);
+document.addEventListener('visibilitychange',updateVisibility);
+document.addEventListener('keydown',e=>{
+ if(/BUTTON|INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;
+ if(e.key==='ArrowRight'||e.code==='Space'||e.key==='Enter'){e.preventDefault();presentationNext()}
+ if(e.key==='ArrowLeft'){e.preventDefault();if(step===3&&moment>0)setMoment(moment-1);else goTo(Math.max(0,step-1))}
+});
+window.focusDemo={getState:()=>({step,stage:TITLES[step],transitioning:Boolean(transition),selected:selected.length,captured:particles.filter(p=>p.removed).length,absorbed,attracting:attractions.length,projection:step>=2?fieldBounds():null,attractionPositions:attractions.map(a=>({x:attractionPoint(a).x,y:attractionPoint(a).y,sourceY:a.y*height,source:a.source,age:a.age})),focus,growth,action,actionPosition:actionPosition(),focusPosition:center(),interventionTime:step===3?(transition?transition.elapsed:4.1):null,moment:step===3?MOMENTS[moment]:null,momentIndex:moment,sunProgress,sunPosition:sunPosition(),skyPresence,accepted,paused,clock,captionStage,captionShown,caption:CAPTIONS[step],reducedMotion:reduce.matches,meanFrameMs:frameMs.length?frameMs.reduce((a,b)=>a+b,0)/frameMs.length:0})};setUI();resize();requestAnimationFrame(tick);
 })();
 </script>
 </body></html>
